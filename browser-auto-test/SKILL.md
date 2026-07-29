@@ -357,6 +357,8 @@ evaluate_script(function="() => document.querySelector('.error')?.textContent")
 
 表格固定 3 列：**前置条件**、**操作步骤**、**预期结果**。
 
+仓库 `examples/` 目录提供可直接运行的示例测试计划，复制修改即可使用。
+
 ### 执行流程
 
 1. 解析 Markdown 表格，提取每个 TC 的前置条件、步骤、预期

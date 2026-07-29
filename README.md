@@ -50,6 +50,10 @@ cp -r browser-auto-test ~/.config/opencode/skills/ # OpenCode
 browser-auto-test/
 ├── README.md
 ├── LICENSE
+├── examples/                   ← 可直接运行的测试计划模板
+│   ├── 登录测试.md
+│   ├── 订单测试.md
+│   └── README.md
 └── browser-auto-test/          ← skill 目录
     ├── SKILL.md                ← AI 加载的完整操作文档
     ├── scripts/

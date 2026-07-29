@@ -24,7 +24,7 @@ def port_ready(port: int) -> bool:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Start dev server and wait for port")
     parser.add_argument("--port", type=int, default=5173, help="Port to wait on")
-    parser.add_argument("--cmd", type=str, default="pnpm run dev", help="Dev server command")
+    parser.add_argument("--cmd", type=str, default="npm run dev", help="Dev server command")
     args = parser.parse_args()
 
     print(f"Starting dev server on port {args.port}...", file=sys.stderr)

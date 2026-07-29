@@ -50,6 +50,9 @@ cp -r browser-auto-test ~/.config/opencode/skills/ # OpenCode
 browser-auto-test/
 ├── README.md
 ├── LICENSE
+├── fixtures/                   ← 测试资源文件（图片、PDF）
+│   ├── test-image.png
+│   └── test-doc.pdf
 ├── examples/                   ← 可直接运行的测试计划模板
 │   ├── 登录测试.md
 │   ├── 订单测试.md

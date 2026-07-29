@@ -222,9 +222,18 @@ resize_page(width=1920, height=1080)                → 调整窗口
 
 ### 文件上传 File Upload
 
+测试文件位于仓库根目录 `fixtures/` 下：
+
+```
+fixtures/
+├── test-image.png     ← 200×200 蓝色图片，用于头像/图片上传
+└── test-doc.pdf       ← 空 PDF，用于文档上传
+```
+
 ```
 // 先 snapshot 找到 file input 的 uid
-upload_file(uid="ref_xxx", filePath="/path/to/file.pdf")
+upload_file(uid="ref_xxx", filePath="fixtures/test-image.png")
+upload_file(uid="ref_xxx", filePath="fixtures/test-doc.pdf")
 ```
 
 ### 模拟 Emulation

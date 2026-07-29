@@ -1,117 +1,121 @@
 # Browser Auto Test
 
-**Watch your AI agent drive a real browser in real time.**
+> **让 AI 帮你跑浏览器测试，你看着它点 — 跟真人操作一样。**
 
-A reusable skill for AI coding agents (Claude Code, OpenCode, Cursor, Gemini CLI, Copilot) that enables visible, interactive browser automated testing. Every click, hover, form fill, and navigation happens in a live Chrome window — you watch the AI test your web app like a human would.
-
-> "测一下" — and the AI opens Chrome, clicks around, fills forms, checks console errors, and reports what it finds.
+[English](#english) · [中文](#中文)
 
 ---
 
-## Features
+<a id="中文"></a>
 
-- **👁️ Visible by default** — Chrome window pops up, you watch everything in real time. No headless mystery.
-- **🤖 Human-like interaction** — Snapshot first, hover to confirm, click, wait, check. Not a robot hammering XHR.
-- **🔍 Exploratory mode** — AI systematically clicks every link, button, and form, checking for console errors and API failures after each step.
-- **📸 Screenshot evidence** — Key steps are screenshot'd for traceability and visual verification.
-- **🕸️ Network-aware** — Automatically checks XHR/fetch requests for 4xx/5xx after every interaction.
-- **📝 Test plan driven** — Follow structured `.md` test cases with preconditions, steps, and expected results.
-- **🎭 Headless available** — Say "后台跑" to switch to Playwright headless mode for CI or quiet runs.
-- **🔌 Zero config** — Auto-detects Chrome on port 9222 or launches a new instance.
+# 中文文档
+
+AI 编程助手（Claude Code、OpenCode、Cursor、Gemini CLI）的浏览器自动化测试 skill。打开一个看得见的 Chrome 窗口，AI 像真人一样点击、填表单、截图、检查报错，你在旁边看着它操作。
+
+> 说一句 **"测一下"**，AI 自动打开 Chrome 开始测试。
 
 ---
 
-## How It Works
+## 特性
+
+- **👁️ 默认可见模式** — Chrome 窗口弹出，你看着 AI 操作，不是黑盒跑
+- **🤖 类人操作** — 先 snapshot 看结构 → hover 确认 → 点击 → 等待 → 检查结果
+- **🔍 探索式测试** — AI 自动点遍每个链接/按钮/表单，每步检查 console error
+- **📸 截图留证** — 关键步骤自动截图，可追溯
+- **🕸️ 网络感知** — 每次交互后自动检查 XHR/fetch 有无 4xx/5xx
+- **📝 测试计划驱动** — 按结构化 Markdown 用例执行，前置条件/步骤/预期结果一目了然
+- **🎭 支持无头模式** — 说"后台跑"切换到 Playwright 无头模式，适合 CI
+- **🔌 零配置** — 自动检测 Chrome 9222 端口，没有就自动启动
+
+---
+
+## 工作原理
 
 ```
-                You say "测一下"
-                      │
-                      ▼
-      ┌───────────────────────────────┐
-      │  Chrome running on :9222?     │
-      │  No → launch Chrome with      │
-      │       --remote-debugging-port │
-      └───────────┬───────────────────┘
-                  │
-                  ▼
-      ┌───────────────────────────────┐
-      │  AI drives browser via        │
-      │  Chrome DevTools Protocol     │
-      │  (chrome-devtools_* tools)    │
-      └───────────┬───────────────────┘
-                  │
-                  ▼
-      ┌───────────────────────────────┐
-      │  Per interaction:             │
-      │  1. snapshot → get page tree  │
-      │  2. hover → confirm target    │
-      │  3. click / fill / navigate   │
-      │  4. wait for response         │
-      │  5. check console errors      │
-      │  6. check network requests    │
-      │  7. screenshot                │
-      └───────────┬───────────────────┘
-                  │
-                  ▼
-      ┌───────────────────────────────┐
-      │  Report results with          │
-      │  screenshots & error logs     │
-      └───────────────────────────────┘
+        你说 "测一下"
+              │
+              ▼
+ ┌───────────────────────────────┐
+ │  Chrome 是否运行在 9222 端口  │
+ │  没有 → 自动启动 Chrome 并     │
+ │         开启 remote-debugging  │
+ └───────────┬───────────────────┘
+             │
+             ▼
+ ┌───────────────────────────────┐
+ │  AI 通过 Chrome DevTools       │
+ │  协议操控浏览器                │
+ └───────────┬───────────────────┘
+             │
+             ▼
+ ┌───────────────────────────────┐
+ │  每次交互：                    │
+ │  ① snapshot → 获取页面结构     │
+ │  ② hover    → 确认目标元素    │
+ │  ③ click / fill / navigate    │
+ │  ④ 等待页面响应               │
+ │  ⑤ 检查 console error         │
+ │  ⑥ 检查网络请求               │
+ │  ⑦ 截图留证                   │
+ └───────────┬───────────────────┘
+             │
+             ▼
+ ┌───────────────────────────────┐
+ │  输出测试报告（截图 + 日志）    │
+ └───────────────────────────────┘
 ```
 
 ---
 
-## Installation
+## 安装
 
-### Option 1: Claude Code
+### Claude Code
 
 ```bash
-# Copy skill to Claude Code skills directory
 cp -r browser-auto-test ~/.claude/skills/
 ```
 
-### Option 2: OpenCode
+### OpenCode
 
 ```bash
-# Skills are auto-discovered from ~/.config/opencode/skills/
 cp -r browser-auto-test ~/.config/opencode/skills/
 ```
 
-### Option 3: Cursor
+### Cursor
 
-Copy `SKILL.md` into `.cursor/rules/` as a rule file.
+把 `SKILL.md` 复制到 `.cursor/rules/` 目录下。
 
-### Option 4: Gemini CLI
+### Gemini CLI
 
 ```bash
 gemini skills install https://github.com/zhou0928/browser-auto-test.git
 ```
 
-### Option 5: Other AI Agents
+### 其他 AI 工具
 
-Skills are plain Markdown. Reference `SKILL.md` in your agent's system prompt or instruction file.
+Skill 就是纯 Markdown 文件，把 `SKILL.md` 加到你的系统提示词或指令文件中即可。
 
 ---
 
-## Quick Start
+## 快速开始
 
-### 1. Interactive mode (visible browser)
+### 1. 交互模式（可见浏览器）
 
-Say to your AI agent:
+对你的 AI 编程助手说：
 
 > **"测一下这个页面"**
 
-The AI will:
-1. Open/connect to Chrome (visible window, port 9222)
-2. Ask for the URL to test
-3. Take a snapshot of the page
-4. Start clicking elements, filling forms, navigating
-5. Check console errors and network failures after each step
-6. Report findings with screenshots
+AI 会：
+1. 打开/连接 Chrome（会弹出窗口，端口 9222）
+2. 问你要测哪个 URL
+3. 获取页面结构（snapshot）
+4. 开始点击元素、填表单、跳转页面
+5. 每步检查 console error 和网络请求
+6. 输出测试结果，附带截图
 
-### 2. Run a test plan
+### 2. 按测试计划跑
 
-Create a test plan file like `login.md`:
+创建测试用例文件，比如 `login.md`：
 
 ```markdown
 # 登录测试
@@ -124,85 +128,101 @@ Create a test plan file like `login.md`:
 |            | 3. 点击登录按钮 | 无控制台报错 |
 ```
 
-Then say:
+然后说：
 
 > **"跑一下 login.md"**
 
-### 3. Headless mode (no window)
+### 3. 无头模式（不弹窗口）
 
 > **"后台跑一下这个测试"**
 
-Switches to Playwright headless — same operations, no visible window.
+切换为 Playwright 无头浏览器，操作逻辑完全相同，但不显示 Chrome 窗口。
 
 ---
 
-## API Reference
+## API 参考
 
-| Operation | Tool | Description |
-|-----------|------|-------------|
-| Navigate | `navigate_page(type="url", url=...)` | Open a URL |
-| Reload | `navigate_page(type="reload")` | Reload page |
-| Snapshot | `take_snapshot()` | Get accessibility tree |
-| Screenshot | `take_screenshot()` | Capture visible area |
-| Full page | `take_screenshot(fullPage=true)` | Capture entire page |
-| Element shot | `take_screenshot(uid="...")` | Capture element only |
-| Click | `click(uid="...")` | Click element |
-| Double click | `click(uid="...", dblClick=true)` | Double click |
-| Hover | `hover(uid="...")` | Hover over element |
-| Fill form | `fill_form(elements=[...])` | Batch fill fields |
-| Fill input | `fill(uid="...", value="...")` | Single input |
-| Type text | `type_text(text="...")` | Keyboard type |
-| Press key | `press_key(key="Enter")` | Key press |
-| Execute JS | `evaluate_script(function="...")` | Run JavaScript |
-| Console errors | `list_console_messages(types=["error"])` | Check errors |
-| Network requests | `list_network_requests(resourceTypes=["xhr","fetch"])` | Check APIs |
-| Request detail | `get_network_request(reqid=3)` | Full request info |
-| Dialog | `handle_dialog(action="accept"/"dismiss")` | Handle alert/confirm |
-| Drag | `drag(from_uid="...", to_uid="...")` | Drag & drop |
-| Resize | `resize_page(width=1920, height=1080)` | Resize window |
-| Tabs | `list_pages()` / `select_page(pageId=0)` | Tab management |
-| New tab | `new_page(url="...")` | Open new tab |
-| Close tab | `close_page(pageId=1)` | Close tab |
-| File upload | `upload_file(uid="...", filePath="...")` | Upload file |
+| 操作 | 工具 | 说明 |
+|------|------|------|
+| 导航 | `navigate_page(type="url", url=...)` | 打开 URL |
+| 刷新 | `navigate_page(type="reload")` | 刷新页面 |
+| 后退 | `navigate_page(type="back")` | 后退 |
+| 结构 | `take_snapshot()` | 获取 accessibility 树 |
+| 截图 | `take_screenshot()` | 截当前可视区域 |
+| 全页截图 | `take_screenshot(fullPage=true)` | 截完整页面 |
+| 元素截图 | `take_screenshot(uid="...")` | 截特定元素 |
+| 点击 | `click(uid="...")` | 点击元素 |
+| 双击 | `click(uid="...", dblClick=true)` | 双击 |
+| 悬停 | `hover(uid="...")` | 鼠标悬停 |
+| 批量填表 | `fill_form(elements=[...])` | 一次填多个字段 |
+| 填输入框 | `fill(uid="...", value="...")` | 单个输入 |
+| 键盘输入 | `type_text(text="...")` | 逐字输入 |
+| 按键 | `press_key(key="Enter")` | 键盘按键 |
+| 执行 JS | `evaluate_script(function="...")` | 运行 JavaScript |
+| 控制台错误 | `list_console_messages(types=["error"])` | 检查报错 |
+| 网络请求 | `list_network_requests(resourceTypes=["xhr","fetch"])` | 检查 API |
+| 请求详情 | `get_network_request(reqid=3)` | 查看完整请求 |
+| 弹窗 | `handle_dialog(action="accept"/"dismiss")` | 处理弹窗 |
+| 拖拽 | `drag(from_uid="...", to_uid="...")` | 拖拽元素 |
+| 调窗口 | `resize_page(width=1920, height=1080)` | 改分辨率 |
+| 标签管理 | `list_pages()` / `select_page(pageId=0)` | 多标签页 |
+| 新标签 | `new_page(url="...")` | 打开新标签 |
+| 关标签 | `close_page(pageId=1)` | 关闭标签 |
+| 文件上传 | `upload_file(uid="...", filePath="...")` | 上传文件 |
 
 ---
 
-## Exploratory Testing Workflow
+## 探索式测试
 
-The AI follows this loop when doing open-ended testing:
+AI 执行以下循环进行无固定脚本的探索式测试：
 
 ```
-Loop:
-  1. take_snapshot()              → get all interactive elements
-  2. take_screenshot()            → capture current state
-  3. list_console_messages(error) → check for errors
-  4. pick next unclicked element (priority order)
-  5. hover → wait 0.5s → click → wait 1-2s
-  6. post-action checks
-  7. page changed? → rescan
+循环：
+  ① take_snapshot()              → 获取所有可交互元素
+  ② take_screenshot()            → 截当前画面
+  ③ list_console_messages(error) → 检查报错
+  ④ 按优先级选一个没点过的元素
+  ⑤ hover → 等 0.5s → click → 等 1-2s
+  ⑥ 操作后检查
+  ⑦ 页面变了 → 重新扫描
 ```
 
-**Element priority:**
-| Priority | Elements |
-|----------|----------|
-| P0 | Links, tabs, menu items |
-| P1 | Buttons (submit/save/delete) |
-| P2 | Inputs, toggles, checkboxes |
-| P3 | Dropdowns, sliders, date pickers |
-| P4 | Modal close buttons |
-| P5 | Pagination, sorting |
+### 元素优先级
 
-**Post-action checklist:**
-1. Wait 1-2 seconds for page response
-2. `list_console_messages(types=["error"])`
-3. `list_network_requests(resourceTypes=["xhr","fetch"])`
-4. `take_screenshot()` — save evidence
+| 优先级 | 元素 |
+|--------|------|
+| P0 | 链接、Tab、菜单项 |
+| P1 | 按钮（提交/保存/删除） |
+| P2 | 输入框、开关、复选框 |
+| P3 | 下拉框、滑块、日期选择器 |
+| P4 | 模态框关闭按钮 × |
+| P5 | 分页、排序 |
+
+### 操作后检查
+
+```
+1. 等 1-2 秒让页面响应
+2. list_console_messages(types=["error"])
+3. list_network_requests(resourceTypes=["xhr","fetch"])
+4. take_screenshot() → 保存证据
+```
+
+### 异常处理
+
+| 现象 | 处理 |
+|------|------|
+| 控制台有 error | 截图 + 记录，继续 |
+| API 4xx/5xx | 截图 + 记录，继续 |
+| 白屏 | 截图 + 记录 URL |
+| 弹窗 | 截图弹窗 → 关掉 |
+| 点了没反应 | 跳过，继续下一个 |
+| 页面变了 | 重新扫描 |
 
 ---
 
-## Test Plan Format
+## 测试计划格式
 
-Test plans are Markdown files with structured tables. Place them in any directory and reference by path:
+测试计划用 Markdown 表格写用例：
 
 ```markdown
 # 页面名称
@@ -217,25 +237,25 @@ Test plans are Markdown files with structured tables. Place them in any director
 ...
 ```
 
-Each test case table has 3 columns: **前置条件** (preconditions), **操作步骤** (steps), **预期结果** (expected results).
+每张表格 3 列：**前置条件**、**操作步骤**、**预期结果**。
 
 ---
 
-## Scripts
+## 辅助脚本
 
 ### `test-env.sh`
 
-Start a local dev server and wait for it to become ready:
+启动本地开发服务器，等待端口就绪：
 
 ```bash
-bash scripts/test-env.sh          # default port 5173
-bash scripts/test-env.sh 3000     # custom port
-bash scripts/test-env.sh 8080 "npm start"  # custom command
+bash scripts/test-env.sh                  # 默认 5173 端口
+bash scripts/test-env.sh 3000             # 自定义端口
+bash scripts/test-env.sh 8080 "npm start" # 自定义命令
 ```
 
 ### `snapshot-diff.sh`
 
-Compare two screenshots using ImageMagick:
+对比两张截图（基于 ImageMagick）：
 
 ```bash
 bash scripts/snapshot-diff.sh baseline.png current.png diff.png
@@ -243,14 +263,65 @@ bash scripts/snapshot-diff.sh baseline.png current.png diff.png
 
 ---
 
-## Requirements
+## 环境要求
 
 - Google Chrome
-- macOS / Linux (Windows via WSL)
-- AI agent with tool-calling support (Claude Code, OpenCode, Cursor, etc.)
+- macOS / Linux（Windows 用 WSL）
+- 支持工具调用的 AI 编程助手（Claude Code、OpenCode、Cursor 等）
 
 ---
 
 ## License
 
 MIT
+
+---
+
+<a id="english"></a>
+
+# English
+
+*This section is a compact reference. See the [Chinese version](#中文) above for full documentation.*
+
+**Browser Auto Test** — An AI agent skill for visible, interactive browser testing. The AI opens a real Chrome window and performs clicks, form fills, and navigation while you watch.
+
+### Install
+
+```bash
+# Claude Code
+cp -r browser-auto-test ~/.claude/skills/
+
+# OpenCode
+cp -r browser-auto-test ~/.config/opencode/skills/
+
+# Gemini CLI
+gemini skills install https://github.com/zhou0928/browser-auto-test.git
+```
+
+### Usage
+
+- **"Test this page"** → AI opens Chrome, starts exploratory testing
+- **"Run login.md"** → AI executes structured test cases from file
+- **"Headless mode"** → Switch to Playwright headless for CI
+
+### Key Features
+
+- Visible Chrome window — not headless, you see every interaction
+- Snapshot-first approach: get accessibility tree before clicking
+- Automatic console error & network check after every action
+- Exploratory testing: systematically click all elements, report failures
+- Test plan driven: structured Markdown test cases with pass/fail reporting
+- Headless fallback for CI pipelines
+
+### API Operations
+
+Navigate, snapshot, click, hover, fill forms, screenshot, execute JS, check console/network, handle dialogs, keyboard, tabs, file upload, emulation — all via Chrome DevTools Protocol.
+
+### Scripts
+
+- `test-env.sh` — start dev server and wait for ready
+- `snapshot-diff.sh` — ImageMagick screenshot comparison
+
+### Requirements
+
+Chrome, macOS/Linux, AI agent with tool-calling support. MIT license.

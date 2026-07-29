@@ -444,8 +444,8 @@ browser-auto-test/
 └── browser-auto-test/              ← browser-auto-test skill
     ├── SKILL.md                    ←   AI 代理读取的 skill 定义
     ├── scripts/
-    │   ├── test-env.sh             ←   本地开发服务器启动脚本
-    │   └── snapshot-diff.sh        ←   截图对比脚本 (ImageMagick)
+    │   ├── test_env.py             ←   本地开发服务器启动脚本
+    │   └── snapshot_diff.py        ←   截图对比脚本 (ImageMagick)
     └── browser-auto-test.zip       ←   可分发的 skill 安装包
 ```
 
@@ -550,8 +550,8 @@ browser-auto-test/
 └── browser-auto-test/
     ├── SKILL.md
     ├── scripts/
-    │   ├── test-env.sh
-    │   └── snapshot-diff.sh
+    │   ├── test_env.py
+    │   └── snapshot_diff.py
     └── browser-auto-test.zip
 ```
 
